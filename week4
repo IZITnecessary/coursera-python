@@ -1,0 +1,62 @@
+from numpy import *
+from pylab import *
+import matplotlib.pyplot as plt
+from math import *
+
+# ----- WEEK 4 -------
+num_labels = 10
+lamb=0.1
+data=loadtxt("ex2data1.txt",delimiter=',')
+X=data[:,1]
+X=X.transpose()
+y=data[:,2]
+y=y.transpose()
+theta=data[:,0]
+
+#-----------------------Sigmoid----------------
+def sigmoid(z):
+    return (1/(1+e**(-z)))
+
+#1-----------------lrCostFunction--------------
+
+def lrCostFunction(theta, X, y, lamb, alpha):
+    m=len(y)
+    h=sigmoid(theta.dot(X))
+    cost=(-1/2*m)*sum( y*log(h)+(1-y)*log(1-h))+lamb/(2*m)*sum(theta**2)
+    theta=theta-alpha*(1/m)*X*(h-y)+(2*lamb)*theta
+    theta[0]=theta[0]-alpha*(1/m)*sum((h-y)*X[0])
+    return cost
+#2-----------------oneVsAll------------------
+def oneVsAll(X, y, num_labels, lamb):
+    alpha=0.01
+    m=len(y)
+    n=len(X)
+    a,b=data.shape
+    theta=zeros(num_labels*b).reshape(num_labels,b)
+    for i in range(num_labels):
+        max_iter=1500
+        for j in range(max_iter):
+            lrCostFunction(theta[i], X, y, lamb, alpha)
+    return theta
+
+#3-----------------predictOneVsAll------------------
+
+def predictOneVsAll(all_theta, X):
+    all_theta= oneVsAll(X, y, num_labels, lamb)
+    return where(sigmoid(all_theta.transpoe().dot(X))==max(sigmoid(all_theta.transpoe().dot(X))))[0][0]
+
+           
+#4-----------------predict-------------------------
+
+def predict(Theta1, Theta2, X):
+    insert(X,0,1)
+    a=1/(1+e**(-X*Theta1.transpose()))
+    insert(a,0,1)
+    h=1/(1+e**(-a*Theta2.transpose()))
+    return np.where(h==max(h))[0][0]
+
+    
+
+Theta1=theta
+Theta2=theta
+predict(Theta1, Theta2, X)
