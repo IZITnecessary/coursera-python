@@ -1,0 +1,47 @@
+from numpy import *
+from pylab import *
+import matplotlib.pyplot as plt
+from math import *
+
+
+#PROBLEM WITH SOME PYTHON SCALARS
+
+# ----- WEEK 3 -------
+
+data=loadtxt("ex2data1.txt",delimiter=',')
+X=data[:,1]
+X=X.transpose()
+y=data[:,2]
+y=y.transpose()
+theta=data[:,0]
+
+#1----------------------Sigmoid----------------
+def sigmoid(z):
+    return (1/(1+e**(-z)))                 #  math.exp(-z)     ???????    
+#--------------------------------------------------------------
+h=sigmoid(theta*X)
+#2--------------------Cost function------------
+def costFunction(theta, X, y):
+    m=len(y)
+    return 1/m*[y*log(h)+(1-y)*log(1-h)]
+
+#costFunction(theta,X,y)
+#3-----------------Predict---------------------
+
+def predict(theta, X):
+    m=len(X)
+    ans=zeros(len(X))
+    for i in range (0,m):
+        if sigmoid(theta[i]*X[i])>=0.5:
+            ans[i]=1
+        else:
+            ans[i]=0
+    return ans
+
+#4----------------costFunctionReg--------------
+def costFunctionReg(theta, X, y, lamb):
+    m=len(y)
+    costFunction(theta, X, y)+lamb/(2*m)*sum(theta**2)
+
+lamb=2
+costFunctionReg(theta, X, y, lamb)
