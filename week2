@@ -1,0 +1,74 @@
+from numpy import *
+from pylab import *
+import matplotlib.pyplot as plt
+
+# 1---------Identity matrix-------------------------------------------------------------------
+
+print(eye(5))
+
+# 2------------Plotting-----------------------------------------------------------------------
+
+mydata = loadtxt("ex1data1.txt",delimiter=',')
+plt.plot(mydata[:,0],mydata[:,1],'b +')
+xlabel("population")
+ylabel("revenue")
+
+# 3------Cost and Gradient descent----------------------------------------------------------------
+
+def GradDesc(x, y, theta, alpha, m, num_iters):
+    for i in range(0, num_iters):
+        
+        theta=theta-alpha*x.transpose().dot(x.dot(theta)-y)/m
+    return theta
+
+NumOfIters=1500
+alpha=0.01
+
+data = loadtxt("ex1data1.txt",delimiter=',')
+x=data[:,0] 
+y=data[:,1]
+
+X=zeros([x.size, 2])
+
+X[:,1]=x
+X[:,0]=1
+
+theta=([0,0])
+theta=GradDesc(X, y, theta, alpha, y.size, NumOfIters)
+
+
+
+plot(x,y,"r+")
+plot(x,X.dot(matrix(theta).T))
+
+
+# 4----------------Compute Cost----------------------------------------------------------------
+def computeCost(X, y, theta):
+    m=len(y)
+    x=X.transpose()
+    for i in range(0,m):
+        theta[i]=1/(2*m)*(sum(x[i]*(theta[i])-y[i])**2)
+
+computeCost(X,y,theta)
+theta
+
+
+# 5----------------Feature Normalize----------------------------------------------------------------
+ 
+X=loadtxt("ex1data1.txt",delimiter=',')
+
+def Featurenorm(X):    
+    for i in range(0, X[:,0].size):
+        for j in range (0, X[0,:].size):
+            X[i,j]=(X[i,j]-average(X[:,j]))/(max(X[:,j])-min(X[:,j]))
+    return X
+
+
+
+Featurenorm(X)
+
+
+
+
+
+
