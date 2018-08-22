@@ -1,0 +1,40 @@
+from numpy import*
+
+#----------WEEK 5 ----------
+alpha=0.01
+
+def sigmoid(z):
+	return 1/(1+e**(-z))
+
+#----sigmoid gradient-------
+def sigmoidGradient(z):
+	return sigmoid(z)*(1-sigmoid(z))
+	
+#-----initialize weights---------
+def initializeWeights(L_in, L_out):
+	return andom.random((L_in, L_out))
+
+#-------forward Propagation---------
+
+	X=concentrate((ones(shape=(len(X),1)),X),axis=1)
+	a1=X
+	z2=theta1*a1
+	a2=sigmoid(z2)
+	z3=theta2*a2
+	a3=sigmoid(z3)
+	#-------backprop--------------------
+	m=len(X)
+	reg=sum(sum(Theta1[:,1:]**2))+sum(sum(Theta2[:,1:]**2))*lamb/m
+	J=sum(sum(-y*log(a3))-(1-y)*(1-log(1-a3)))+reg
+	delta3=a3-y
+	delta2=Theta2.transpose()*(delta3)*sigmoidGradient(z2)
+	
+	J_gradient_theta2=(delta3*a2)/m+lamb*Theta2/m
+	J_gradient_theta2[:,0]-=lamb*Theta2/m
+	
+	J_gradient_theta1=(delta2*a2)/m+lamb*Theta1/m
+	J_gradient_theta1[:,0]-=lamb*Theta1/m
+
+	Theta1-=J_gradient_theta1*alpha
+	Theta2-=J_gradient_theta2*alpha
+    
